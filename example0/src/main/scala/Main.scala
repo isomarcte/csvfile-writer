@@ -8,12 +8,17 @@ object Main {
   val header: List[String] =
     List("Serial Number", "Record Type", "First File value", "Second file value")
 
+  val columnOne: List[String] =
+    List('1','2','3','4').map(_.toString)
+  val columnTwo: List[String] =
+    List("A","abhc","agch","mknk")
+  val columnThree: List[String] =
+    List("B", "gjgbn", "fgbhjf", "dfjf")
+
   val rows: List[List[String]] =
-    List(
-      List(
-        List('1','2','3','4').toString, List("A","abhc","agch","mknk").toString, List("B", "gjgbn", "fgbhjf", "dfjf").toString
-      )
-    )
+    columnOne.zip(columnTwo.zip(columnThree)).foldLeft(List.empty[List[String]]){
+      case (acc, (a, (b, c))) => List(a, b, c) +: acc
+    }.reverse
 
   def addPrefix(lls: List[List[String]]): List[List[String]] =
     lls.foldLeft((1, List.empty[List[String]])){
@@ -46,7 +51,6 @@ object Main {
     )
 
   def main(args: Array[String]): Unit = {
-    val rs: List[List[String]] = rows.flatMap(r => (1 to 5).map(_ => r))
-    println(writeCsvFile("/tmp/test.csv", header, addPrefix(rs)))
+    println(writeCsvFile("/tmp/test.csv", header, addPrefix(rows)))
   }
 }
